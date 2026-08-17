@@ -219,7 +219,7 @@
     </div>
 </div>
 
-<!-- المحتوى الرئيسي (أصبح مخفياً افتراضياً) -->
+<!-- المحتوى الرئيسي -->
 <div class="wrap hidden" id="app-content">
   <div class="logo-header">
       <img src="https://i.ibb.co/j0WTgHT/IMG-20260624-WA0005-10.jpg" alt="OLA Logo">
@@ -348,7 +348,8 @@
 </div>
 
 <script>
-const SUPABASE_URL = "http://167.86.106.111:8000";
+// تم التحديث هنا لربط التطبيق بالنفق الآمن الخاص بشبكة OLA بدلاً من الـ IP المباشر
+const SUPABASE_URL = "https://jazz-rapid-finance-gate.trycloudflare.com"; 
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyAgCiAgICAicm9sZSI6ICJhbm9uIiwKICAgICJpc3MiOiAic3VwYWJhc2UtZGVtbyIsCiAgICAiaWF0IjogMTY0MTc2OTIwMCwKICAgICJleHAiOiAxNzk5NTM1NjAwCn0.dc_X5iR_VP_qT0zsiyj_I_OZ2T9FtRU2BBNWN8Bu4GE"; 
 const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
@@ -468,15 +469,12 @@ async function registerNewUser() {
 }
 
 /* =========================================================
-   نفق الإعلانات الآمن (Ad Tunnel)
+   نفق الإعلانات الآمن (Ad Tunnel) - كما طلبتم ليتطابق مع الشات
 ========================================================= */
 async function showAdTunnel(onComplete) {
-    const AD_SUPABASE_URL = "https://jazz-rapid-finance-gate.trycloudflare.com"; 
-    const AD_SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyAgCiAgICAicm9sZSI6ICJhbm9uIiwKICAgICJpc3MiOiAic3VwYWJhc2UtZGVtbyIsCiAgICAiaWF0IjogMTY0MTc2OTIwMCwKICAgICJleHAiOiAxNzk5NTM1NjAwCn0.dc_X5iR_VP_qT0zsiyj_I_OZ2T9FtRU2BBNWN8Bu4GE";
-    
     try {
-        const res = await fetch(AD_SUPABASE_URL + '/rest/v1/ola_ads?active=eq.true&select=*', { 
-            headers: { 'apikey': AD_SUPABASE_KEY, 'Authorization': 'Bearer ' + AD_SUPABASE_KEY } 
+        const res = await fetch(SUPABASE_URL + '/rest/v1/ola_ads?active=eq.true&select=*', { 
+            headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY } 
         });
         let ads = await res.json();
         
@@ -1202,7 +1200,6 @@ window.onload = function() {
     if(localStorage.getItem("ola_id")) {
         init();
     } else {
-        // تم إضافة هذا الجزء ليعرض الشاشة بشكل صحيح في حال عدم توفر تسجيل دخول
         document.getElementById("login-screen").classList.remove("hidden");
         document.getElementById("app-content").classList.add("hidden");
         document.getElementById("bottom-nav").classList.add("hidden");
